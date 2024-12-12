@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .photo-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .photo-item img {
+            max-width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Photo Viewer</h1>
+    <label for="tag-select">Filter by Tag:</label>
+    <select id="tag-select">
+        <option value="">All</option>
+    </select>
+    <div id="photo-gallery"></div>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>
