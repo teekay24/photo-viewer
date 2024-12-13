@@ -50,91 +50,23 @@
         .view-full-photo:hover {
             text-decoration: underline; /* Optional: Add underline on hover */
         }
-        .filters {
-            margin: 20px 0;
-            display: flex; /* Use flexbox to align items horizontally */
-            justify-content: center;
-            gap: 20px; /* Space between search bar and dropdown */
-        }
-        .filters input {
-            padding: 8px;
-            font-size: 16px;
-            width: 300px;
-        }
-        .filters select {
-            padding: 8px;
-            font-size: 16px;
-        }
     </style>
 </head>
 <body>
     <h1>Photo Viewer</h1>
-
-    <!-- Filters (Search bar and dropdown) -->
-    <div class="filters">
-        <div>
-            <label for="search-input">Search by Player, Set, or Tag:</label>
-            <input type="text" id="search-input" placeholder="Enter search term...">
-        </div>
-        <div>
-            <label for="tag-select">Filter by Tag:</label>
-            <select id="tag-select">
-                <option value="">All</option>
-                <option value="Tag 1">Tag 1</option>
-                <option value="Tag 2">Tag 2</option>
-                <option value="Tag 3">Tag 3</option>
-                <!-- Add more options as needed -->
-            </select>
-        </div>
-    </div>
-
+    <label for="tag-select">Filter by Tag:</label>
+    <select id="tag-select">
+        <option value="">All</option>
+    </select>
     <div id="photo-gallery">
         <!-- Sample photo item, adjust dynamically using JavaScript -->
-        <div class="photo-item" data-player="Player 1" data-set="Set 1" data-tags="Tag 1,Tag 3">
+        <div class="photo-item">
             <img src="path/to/image.jpg" alt="Sample Image">
             <p>Description of the photo or tag goes here.</p>
             <a href="full-photo-link.html" class="view-full-photo">View Full Photo</a>
         </div>
-        <!-- More photo items here -->
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
-    <script>
-        // Function to filter photos based on search input and tag selection
-        function filterPhotos() {
-            const searchTerm = document.getElementById('search-input').value.toLowerCase();
-            const selectedTag = document.getElementById('tag-select').value.toLowerCase();
-            const photos = document.querySelectorAll('.photo-item');
-            
-            photos.forEach(photo => {
-                const player = photo.getAttribute('data-player').toLowerCase();
-                const set = photo.getAttribute('data-set').toLowerCase();
-                const tags = photo.getAttribute('data-tags').toLowerCase();
-                
-                // Check if search term matches player, set, or any tag
-                const matchesSearch = player.includes(searchTerm) || set.includes(searchTerm) || tags.includes(searchTerm);
-                const matchesTag = selectedTag === '' || tags.includes(selectedTag);
-                
-                // Show photo if it matches both the search and tag filter
-                if (matchesSearch && matchesTag) {
-                    photo.style.display = 'block';  // Show photo
-                } else {
-                    photo.style.display = 'none';   // Hide photo
-                }
-            });
-        }
-
-        // Add event listeners to trigger filtering on search input or tag selection
-        document.getElementById('search-input').addEventListener('input', filterPhotos);
-        document.getElementById('tag-select').addEventListener('change', filterPhotos);
-        
-        // Ensure all photos are visible on page load
-        window.addEventListener('load', () => {
-            const photos = document.querySelectorAll('.photo-item');
-            photos.forEach(photo => {
-                photo.style.display = 'block';  // Show all photos by default
-            });
-        });
-    </script>
+    <script src="./script.js"></script>
 </body>
 </html>
