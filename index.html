@@ -11,18 +11,18 @@
         }
         #photo-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Multiple columns, larger images */
+            grid-template-columns: repeat(auto-fill, minmax(440px, 1fr)); /* Multiple columns, larger images */
             gap: 16px;
             margin-top: 20px;
         }
         .photo-item {
-            width: 300px; /* Larger photo item */
-            height: 400px; /* Larger photo item */
+            width: 400px; /* Larger photo item */
+            height: 600px; /* Larger photo item */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            margin: 5px;
+            margin: 10px;
             text-align: center;
             overflow: hidden;
         }
@@ -32,17 +32,17 @@
             object-fit: cover; /* Ensure the image scales properly */
         }
         .photo-item p {
-            font-size: 14px; /* Larger text for description */
+            font-size: 16px; /* Larger text for description */
             line-height: 1.4;
             word-wrap: break-word;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-height: 36px; /* Adjust for more visible text */
-            margin-bottom: 5px; /* Reduced margin */
+            max-height: 90px; /* Adjust for more visible text */
+            margin-bottom: 8px; /* Reduced margin */
         }
         .view-full-photo {
-            font-size: 7px; /* Smaller font size for the link */
-            margin-top: 2px; /* Tightened space */
+            font-size: 12px; /* Smaller font size for the link */
+            margin-top: 4px; /* Tightened space */
             color: #007bff; /* Optional: Link color */
             cursor: pointer; /* Optional: Change cursor to pointer */
             text-decoration: none; /* Optional: Remove underline */
@@ -50,23 +50,64 @@
         .view-full-photo:hover {
             text-decoration: underline; /* Optional: Add underline on hover */
         }
+        .filters {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .filters input {
+            padding: 8px;
+            font-size: 16px;
+            width: 300px;
+        }
+        .filters label {
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <h1>Photo Viewer</h1>
-    <label for="tag-select">Filter by Tag:</label>
-    <select id="tag-select">
-        <option value="">All</option>
-    </select>
+
+    <!-- Search Bar -->
+    <div class="filters">
+        <label for="search-input">Search by Player, Set, or Tag:</label>
+        <input type="text" id="search-input" placeholder="Enter search term...">
+    </div>
+
     <div id="photo-gallery">
         <!-- Sample photo item, adjust dynamically using JavaScript -->
-        <div class="photo-item">
+        <div class="photo-item" data-player="Player 1" data-set="Set 1" data-tags="Tag 1,Tag 3">
             <img src="path/to/image.jpg" alt="Sample Image">
             <p>Description of the photo or tag goes here.</p>
             <a href="full-photo-link.html" class="view-full-photo">View Full Photo</a>
         </div>
+        <!-- More photo items here -->
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
-    <script src="./script.js"></script>
+    <script>
+        // Function to filter photos based on search input
+        function filterPhotos() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const photos = document.querySelectorAll('.photo-item');
+            
+            photos.forEach(photo => {
+                const player = photo.getAttribute('data-player').toLowerCase();
+                const set = photo.getAttribute('data-set').toLowerCase();
+                const tags = photo.getAttribute('data-tags').toLowerCase();
+                
+                // Check if search term matches player, set, or any tag
+                const matchesSearch = player.includes(searchTerm) || set.includes(searchTerm) || tags.includes(searchTerm);
+                
+                if (matchesSearch) {
+                    photo.style.display = 'block';  // Show photo
+                } else {
+                    photo.style.display = 'none';   // Hide photo
+                }
+            });
+        }
+
+        // Add event listener to trigger filtering on search input
+        document.getElementById('search-input').addEventListener('input', filterPhotos);
+    </script>
 </body>
 </html>
