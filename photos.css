@@ -95,10 +95,13 @@ h1 {
     text-decoration: underline;
 }
 
-/* Optional: Responsive Design */
 @media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
+    #photo-gallery {
+        grid-template-columns: 1fr; /* Single column layout on mobile */
         gap: 10px;
+    }
+    
+    .photo-item {
+        width: 100%; /* Make each photo item take the full width */
     }
 }
