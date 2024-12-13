@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function displayPhotos(photos) {
     const photoGallery = document.getElementById('photo-gallery');
     photoGallery.innerHTML = ''; // Clear the gallery
+const photoPath = `./photos/${photo.Photo_ID}.jpg`;
+console.log(`Constructed photo path: ${photoPath}`);
 
     // Display each photo
     photos.forEach(photo => {
