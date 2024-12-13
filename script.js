@@ -3,26 +3,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagSelect = document.getElementById('tag-select');
     const photoGallery = document.getElementById('photo-gallery');
 
-    function displayPhotos(photos) {
-        const photoGallery = document.getElementById('photo-gallery');
-        photoGallery.innerHTML = ''; // Clear the gallery
+function displayPhotos(photos) {
+    const photoGallery = document.getElementById('photo-gallery');
+    photoGallery.innerHTML = ''; // Clear the gallery
 
-        // Display each photo
-        photos.forEach(photo => {
-            const photoItem = document.createElement('div');
-            photoItem.className = 'photo-item';
+    // Display each photo
+    photos.forEach(photo => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
 
-            // Construct the local file path using the Flickr photo ID
-            const photoPath = `./photos/${photo.Photo_ID}.jpg`;
+        // Construct the local file path by appending .jpg to the Photo_ID
+        const photoPath = `./photos/${photo.Photo_ID}.jpg`;
 
-            photoItem.innerHTML = `
-                <img src="${photoPath}" alt="${photo.Title}">
-                <p>${photo.Title}</p>
-                <a href="${photoPath}" target="_blank">View Full Photo</a>
-            `;
-            photoGallery.appendChild(photoItem);
-        });
-    }
+        photoItem.innerHTML = `
+            <img src="${photoPath}" alt="${photo.Title}">
+            <p>${photo.Title}</p>
+            <a href="${photoPath}" target="_blank">View Full Photo</a>
+        `;
+        photoGallery.appendChild(photoItem);
+    });
+}
+
 
     function populateTags(photos) {
         const tagSelect = document.getElementById('tag-select');
