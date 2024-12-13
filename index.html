@@ -4,26 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #photo-gallery {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .photo-item {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: center;
-        }
-        .photo-item img {
-            max-width: 200px;
-            height: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="photos.css"> <!-- Link to your photos.css -->
 </head>
 <body>
     <h1>Photo Viewer</h1>
@@ -31,7 +12,13 @@
     <select id="tag-select">
         <option value="">All</option>
     </select>
-    <div id="photo-gallery"></div>
+    <div id="photo-gallery">
+        <!-- Sample photo item, adjust dynamically using JavaScript -->
+        <div class="photo-item">
+            <img src="path/to/image.jpg" alt="Sample Image">
+            <p>Description of the photo or tag goes here.</p>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
     <script src="./script.js"></script>
 </body>
