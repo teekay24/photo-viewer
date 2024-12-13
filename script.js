@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tagSelect = document.getElementById('tag-select');
     const photoGallery = document.getElementById('photo-gallery');
-
 function displayPhotos(photos) {
     const photoGallery = document.getElementById('photo-gallery');
     photoGallery.innerHTML = ''; // Clear the gallery
@@ -14,16 +13,20 @@ function displayPhotos(photos) {
 
         // Construct the local file path using the "Photo ID" field
         const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
-        console.log(`Constructed photo path: ${photoPath}`); // Debugging log
+
+        // Retrieve Player and Set values, defaulting to an empty string if undefined
+        const player = photo.Player || '';
+        const set = photo.Set || '';
 
         photoItem.innerHTML = `
             <img src="${photoPath}" alt="${photo.Title}">
-            <p>${photo.Title}</p>
+            <p>${player} ${set}</p>
             <a href="${photoPath}" target="_blank">View Full Photo</a>
         `;
         photoGallery.appendChild(photoItem);
     });
 }
+
 
     function populateTags(photos) {
         const tagSelect = document.getElementById('tag-select');
