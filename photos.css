@@ -94,14 +94,13 @@ h1 {
 .view-full-photo:hover {
     text-decoration: underline;
 }
-
 @media (max-width: 768px) {
     #photo-gallery {
-        grid-template-columns: 1fr; /* Single column layout on mobile */
+        grid-template-columns: repeat(2, 1fr); /* Two columns on mobile */
         gap: 10px;
     }
-    
+
     .photo-item {
-        width: 100%; /* Make each photo item take the full width */
+        width: 100%; /* Ensure items fit within the grid */
     }
 }
