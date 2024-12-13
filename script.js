@@ -12,8 +12,9 @@ function displayPhotos(photos) {
         const photoItem = document.createElement('div');
         photoItem.className = 'photo-item';
 
-        // Construct the local file path by appending .jpg to the Photo_ID
-        const photoPath = `./photos/${photo.Photo_ID}.jpg`;
+        // Construct the local file path using the "Photo ID" field
+        const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
+        console.log(`Constructed photo path: ${photoPath}`); // Debugging log
 
         photoItem.innerHTML = `
             <img src="${photoPath}" alt="${photo.Title}">
@@ -23,7 +24,6 @@ function displayPhotos(photos) {
         photoGallery.appendChild(photoItem);
     });
 }
-
 
     function populateTags(photos) {
         const tagSelect = document.getElementById('tag-select');
