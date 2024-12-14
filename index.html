@@ -36,87 +36,86 @@
         <!-- Photo items dynamically added here -->
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Parse CSV file and load photos
-            Papa.parse('./photos.csv', {
-                download: true,
-                header: true,
-                complete: function (results) {
-                    const photos = results.data;
-                    const tags = new Set();
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Parse CSV file and load photos
+        Papa.parse('./photos.csv', {
+            download: true,
+            header: true,
+            complete: function (results) {
+                const photos = results.data;
+                const tags = new Set();
 
-                    // Extract unique tags and create photo items
-                    photos.forEach(photo => {
-                        const photoTags = (photo.Tags || '').replace(/[()]/g, '').split('/');
-                        photoTags.forEach(tag => tags.add(tag.trim()));
-
-                        createPhotoItem(photo);
-                    });
-
-                    // Create checkboxes for filtering
-                    createTagCheckboxes([...tags]);
-                }
-            });
-
-            // Create a photo item in the gallery
-            function createPhotoItem(photo) {
-                const gallery = document.getElementById("photo-gallery");
-                const photoItem = document.createElement("div");
-                photoItem.className = "photo-item";
-                photoItem.dataset.tags = (photo.Tags || '').replace(/[()]/g, '');
-
-                // Construct the local file path using the "Photo ID" field
-                const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
-                const player = photo.Player || '';
-                const set = photo.Set || '';
-
-                photoItem.innerHTML = `
-                    <img src="${photoPath}" alt="${photo.Title}">
-                    <p>${player} ${set}</p>
-                    <a href="${photoPath}" target="_blank">View Full Photo</a>
-                `;
-
-                gallery.appendChild(photoItem);
-            }
-
-            // Create checkboxes for filtering tags
-            function createTagCheckboxes(tags) {
-                const tagFilters = document.getElementById("tag-filters");
-
-                tags.forEach(tag => {
-                    const label = document.createElement("label");
-                    label.className = "tag-checkbox";
-
-                    const checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
-                    checkbox.value = tag;
-                    checkbox.addEventListener("change", filterPhotos);
-
-                    label.appendChild(checkbox);
-                    label.appendChild(document.createTextNode(tag));
-                    tagFilters.appendChild(label);
-                });
-            }
-
-            // Filter photos based on selected tags
-            function filterPhotos() {
-                const selectedTags = Array.from(
-                    document.querySelectorAll("#tag-filters input:checked")
-                ).map(input => input.value);
-
-                const photos = document.querySelectorAll(".photo-item");
+                // Extract unique tags and create photo items
                 photos.forEach(photo => {
-                    const photoTags = photo.dataset.tags.split(',').map(tag => tag.trim());
-                    if (selectedTags.length === 0 || selectedTags.some(tag => photoTags.includes(tag))) {
-                        photo.style.display = "block";
-                    } else {
-                        photo.style.display = "none";
-                    }
+                    const photoTags = (photo.Tags || '').replace(/[()]/g, '').split('/');
+                    photoTags.forEach(tag => tags.add(tag.trim()));
+
+                    createPhotoItem(photo, photoTags);
                 });
+
+                // Create checkboxes for filtering
+                createTagCheckboxes([...tags]);
             }
         });
-    </script>
+
+        // Create a photo item in the gallery
+        function createPhotoItem(photo, photoTags) {
+            const gallery = document.getElementById("photo-gallery");
+            const photoItem = document.createElement("div");
+            photoItem.className = "photo-item";
+            photoItem.dataset.tags = photoTags.join('/'); // Use '/' as the separator
+
+            // Construct the local file path using the "Photo ID" field
+            const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
+            const player = photo.Player || '';
+            const set = photo.Set || '';
+
+            photoItem.innerHTML = `
+                <img src="${photoPath}" alt="${photo.Title}">
+                <p>${player} ${set}</p>
+                <a href="${photoPath}" target="_blank">View Full Photo</a>
+            `;
+
+            gallery.appendChild(photoItem);
+        }
+
+        // Create checkboxes for filtering tags
+        function createTagCheckboxes(tags) {
+            const tagFilters = document.getElementById("tag-filters");
+
+            tags.forEach(tag => {
+                const label = document.createElement("label");
+                label.className = "tag-checkbox";
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.value = tag;
+                checkbox.addEventListener("change", filterPhotos);
+
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(tag));
+                tagFilters.appendChild(label);
+            });
+        }
+
+        // Filter photos based on selected tags
+        function filterPhotos() {
+            const selectedTags = Array.from(
+                document.querySelectorAll("#tag-filters input:checked")
+            ).map(input => input.value);
+
+            const photos = document.querySelectorAll(".photo-item");
+            photos.forEach(photo => {
+                const photoTags = photo.dataset.tags.split('/').map(tag => tag.trim()); // Match separator
+                if (selectedTags.length === 0 || selectedTags.some(tag => photoTags.includes(tag))) {
+                    photo.style.display = "block";
+                } else {
+                    photo.style.display = "none";
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>
