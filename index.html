@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Photo Viewer</title>
     <link rel="stylesheet" href="photos.css">
+    <style>
+        #tag-filters {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping to new lines */
+            gap: 10px; /* Space between checkboxes */
+        }
+
+        .tag-checkbox {
+            display: flex;
+            align-items: center;
+            margin: 5px;
+        }
+
+        .tag-checkbox input {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
     <h1>Photo Viewer</h1>
