@@ -1,72 +1,82 @@
-// Parse CSV file and load photos
-Papa.parse("./photos.csv", {
-    download: true,
-    header: true,
-    complete: function (results) {
-        const photos = results.data;
-        const tags = new Set();
+// Load and parse CSV
+document.addEventListener('DOMContentLoaded', () => {
+    const tagSelect = document.getElementById('tag-select');
+    const photoGallery = document.getElementById('photo-gallery');
+function displayPhotos(photos) {
+    const photoGallery = document.getElementById('photo-gallery');
+    photoGallery.innerHTML = ''; // Clear the gallery
 
-        // Extract unique tags and generate photo gallery
+    // Display each photo
+    photos.forEach(photo => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
+
+        // Construct the local file path using the "Photo ID" field
+        const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
+
+        // Retrieve Player and Set values, defaulting to an empty string if undefined
+        const player = photo.Player || '';
+        const set = photo.Set || '';
+
+        photoItem.innerHTML = `
+            <img src="${photoPath}" alt="${photo.Title}">
+            <p>${player} ${set}</p>
+            <a href="${photoPath}" target="_blank">View Full Photo</a>
+        `;
+        photoGallery.appendChild(photoItem);
+    });
+}
+
+
+    function populateTags(photos) {
+        const tagSelect = document.getElementById('tag-select');
+        const tagsSet = new Set();
+
+        // Collect all unique tags from the photos
         photos.forEach(photo => {
-            if (photo.tags) {
-                photo.tags.split(",").forEach(tag => tags.add(tag.trim()));
-            }
-            createPhotoItem(photo);
+            const tags = (photo.Tags || '').replace(/[()]/g, '').split('/');
+            tags.forEach(tag => tagsSet.add(tag.trim()));
         });
 
-        // Generate checkboxes for tag filters
-        createTagCheckboxes([...tags]);
+        // Add default "All Tags" option
+        const allOption = document.createElement('option');
+        allOption.value = '';
+        allOption.textContent = 'All Tags';
+        tagSelect.appendChild(allOption);
+
+        // Add each tag to the dropdown
+        Array.from(tagsSet).sort().forEach(tag => {
+            const option = document.createElement('option');
+            option.value = tag;
+            option.textContent = tag;
+            tagSelect.appendChild(option);
+        });
     }
-});
 
-// Create a photo item in the gallery
-function createPhotoItem(photo) {
-    const gallery = document.getElementById("photo-gallery");
-    const photoItem = document.createElement("div");
-    photoItem.className = "photo-item";
-    photoItem.dataset.tags = photo.tags;
+    // Load CSV file
+    Papa.parse('./photos.csv', {
+        download: true,
+        header: true,
+        complete: function(results) {
+            const photos = results.data;
+            populateTags(photos);
+            displayPhotos(photos);
 
-    photoItem.innerHTML = `
-        <img src="${photo.image}" alt="${photo.description}">
-        <p>${photo.description}</p>
-        <a href="${photo.link}" class="view-full-photo">View Full Photo</a>
-    `;
+            // Dropdown change event
+            tagSelect.addEventListener('change', () => {
+                const selectedTag = tagSelect.value;
 
-    gallery.appendChild(photoItem);
-}
+                // Filter photos based on whether the selected tag is included
+                const filteredPhotos = selectedTag
+                    ? photos.filter(photo => {
+                          // Remove parentheses and check if the tag exists
+                          const tags = (photo.Tags || '').replace(/[()]/g, '').split('/');
+                          return tags.map(tag => tag.trim()).includes(selectedTag);
+                      })
+                    : photos; // If no tag selected, show all photos
 
-// Create checkboxes for filtering tags
-function createTagCheckboxes(tags) {
-    const tagFilters = document.getElementById("tag-filters");
-
-    tags.forEach(tag => {
-        const label = document.createElement("label");
-        label.className = "tag-checkbox";
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.value = tag;
-        checkbox.addEventListener("change", filterPhotos);
-
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(tag));
-        tagFilters.appendChild(label);
-    });
-}
-
-// Filter photos based on selected tags
-function filterPhotos() {
-    const selectedTags = Array.from(
-        document.querySelectorAll("#tag-filters input:checked")
-    ).map(input => input.value);
-
-    const photos = document.querySelectorAll(".photo-item");
-    photos.forEach(photo => {
-        const photoTags = photo.dataset.tags ? photo.dataset.tags.split(",") : [];
-        if (selectedTags.length === 0 || selectedTags.some(tag => photoTags.includes(tag))) {
-            photo.style.display = "block";
-        } else {
-            photo.style.display = "none";
+                displayPhotos(filteredPhotos);
+            });
         }
     });
-}
+});
