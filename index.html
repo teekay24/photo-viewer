@@ -48,6 +48,7 @@
 
                 // Extract unique tags and create photo items
                 photos.forEach(photo => {
+                    // Remove parentheses and split tags
                     const photoTags = (photo.Tags || '').replace(/[()]/g, '').split('/');
                     photoTags.forEach(tag => tags.add(tag.trim()));
 
@@ -64,7 +65,9 @@
             const gallery = document.getElementById("photo-gallery");
             const photoItem = document.createElement("div");
             photoItem.className = "photo-item";
-            photoItem.dataset.tags = photoTags.join('/'); // Use '/' as the separator
+
+            // Store cleaned, comma-separated tags in the dataset
+            photoItem.dataset.tags = photoTags.map(tag => tag.trim()).join(',');
 
             // Construct the local file path using the "Photo ID" field
             const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
@@ -107,7 +110,8 @@
 
             const photos = document.querySelectorAll(".photo-item");
             photos.forEach(photo => {
-                const photoTags = photo.dataset.tags.split('/').map(tag => tag.trim()); // Match separator
+                // Clean dataset tags for comparison
+                const photoTags = photo.dataset.tags.split(',').map(tag => tag.trim());
                 if (selectedTags.length === 0 || selectedTags.some(tag => photoTags.includes(tag))) {
                     photo.style.display = "block";
                 } else {
@@ -117,5 +121,6 @@
         }
     });
 </script>
+
 </body>
 </html>
