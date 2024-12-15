@@ -80,3 +80,23 @@ function displayPhotos(photos) {
         }
     });
 });
+
+// Select the button
+const backToTopButton = document.getElementById('back-to-top');
+
+// Show/hide the button based on scroll position
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) { // Show after scrolling down 200px
+        backToTopButton.style.display = 'flex'; // Use 'flex' to center content
+    } else {
+        backToTopButton.style.display = 'none';
+    }
+});
+
+// Scroll to top when button is clicked
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Smooth scrolling
+    });
+});
