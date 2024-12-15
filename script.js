@@ -25,7 +25,7 @@ function displayPhotos(photos) {
         photoItem.innerHTML = `
             <img src="${photoPath}" alt="${photo.Title}" loading="lazy">
             <p>${player} ${set}</p>
-            <a href="#" class="view-full-photo">View Full Photo</a>
+            <a href="#" class="view-full-photo">Enlarge Photo</a>
         `;
 
         // Append the photo item to the gallery
