@@ -109,10 +109,10 @@ h1 {
 }
 
 .view-full-photo {
-    font-size: 8px;
+    font-size: 6px;
     color: #007bff;
     text-decoration: none;
-    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 .view-full-photo:hover {
