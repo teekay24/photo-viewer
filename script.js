@@ -2,30 +2,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const tagSelect = document.getElementById('tag-select');
     const photoGallery = document.getElementById('photo-gallery');
 
-    function displayPhotos(photos) {
-        const photoGallery = document.getElementById('photo-gallery');
-        photoGallery.innerHTML = ''; // Clear the gallery
+function displayPhotos(photos) {
+    const photoGallery = document.getElementById('photo-gallery');
+    const modal = document.getElementById('photo-modal');
+    const modalImage = document.getElementById('modal-image');
+    const closeModal = document.querySelector('.close');
 
-        // Display each photo
-        photos.forEach(photo => {
-            const photoItem = document.createElement('div');
-            photoItem.className = 'photo-item';
+    photoGallery.innerHTML = ''; // Clear the gallery
 
-            // Construct the local file path using the "Photo ID" field
-            const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
+    // Display each photo
+    photos.forEach(photo => {
+        const photoItem = document.createElement('div');
+        photoItem.className = 'photo-item';
 
-            // Retrieve Player and Set values, defaulting to an empty string if undefined
-            const player = photo.Player || '';
-            const set = photo.Set || '';
+        // Construct the local file path using the "Photo ID" field
+        const photoPath = `./photos/${photo["Photo ID"]}.jpg`;
 
-            photoItem.innerHTML = `
-                <img src="${photoPath}" alt="${photo.Title}" loading="lazy"> <!-- Add lazy loading -->
-                <p>${player} ${set}</p>
-                <a href="${photoPath}" target="_blank">View Full Photo</a>
-            `;
-            photoGallery.appendChild(photoItem);
+        // Retrieve Player and Set values, defaulting to an empty string if undefined
+        const player = photo.Player || '';
+        const set = photo.Set || '';
+
+        photoItem.innerHTML = `
+            <img src="${photoPath}" alt="${photo.Title}" loading="lazy">
+            <p>${player} ${set}</p>
+            <a href="#" class="view-full-photo">View Full Photo</a>
+        `;
+
+        // Append the photo item to the gallery
+        photoGallery.appendChild(photoItem);
+
+        // Add event listener for the modal
+        const viewLink = photoItem.querySelector('.view-full-photo');
+        viewLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Prevent navigation
+            modal.style.display = 'block';
+            modalImage.src = photoPath; // Set the image in the modal
         });
-    }
+    });
+
+    // Close the modal when the close button is clicked
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close the modal when clicking outside the image
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}
 
     function populateTags(photos) {
         const tagSelect = document.getElementById('tag-select');
